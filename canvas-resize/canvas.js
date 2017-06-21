@@ -45,27 +45,72 @@
 
  // 	console.log(canvas);
 
- var x = 200;
- var dir = 1;
+ 	// Circle Object
+ 	function Circle(x, y, dx, dy, radius, dr) {
+ 		this.x = x;
+ 		this.y = y;
+ 		this.dx = dx;
+ 		this.dy = dy;
+ 		this.radius = radius;
+ 		this.dr = dr;
+
+ 		this.draw = function () {
+ 			c.beginPath();
+			c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+			c.strokeStyle = "red";
+			c.stroke();
+			c.fillStyle = "black";
+			c.fill();
+ 		}
+
+ 		this.update = function() {
+ 			// test is circles have hit walls
+ 			if(this.x + this.radius > window.innerWidth || this.x < this.radius){
+				this.dx = -this.dx;
+			}
+			if(this.y + this.radius > window.innerHeight || this.y < this.radius){
+				this.dy = -this.dy;
+			}
+
+			// move circles across screen
+			this.x += this.dx;
+			this.y += this.dy;
+
+			// //test if circles have reached max or min size
+			// if(this.radius > 60) {
+			// 	this.radius = 59;
+			// 	this.dr = -this.dr;
+			// }else if (this.radius < 0){
+			// 	this.radius = 1;
+			// 	this.dr = -this.dr;
+			// }
+
+			// //change circle size
+			// this.radius += this.dr;
+
+			this.draw();
+ 		}
+ 	}
+
+ 	var circleArray = [];
+
+	for(var i = 0; i < 100; i++){
+		var radius = Math.floor(Math.random() * 60);
+		var dr = 1;
+		var x = Math.random() * (innerWidth - radius*2) + radius;
+		var y = Math.random() * (innerHeight - radius*2) + radius;
+		var dx = (Math.random() - 0.5) * 8;
+		var dy = (Math.random() - 0.5) * 8;
+		circleArray.push(new Circle(x, y, dx, dy, radius, dr));
+	}
+
+
 	// Moving Circle
 	function animate() {
 		requestAnimationFrame(animate);
 		c.clearRect(0, 0, innerWidth, innerHeight);
-		c.beginPath();
-		c.arc(x, 200, 30, 0, Math.PI * 2, false);
-		c.strokeStyle = "blue";
-		c.stroke();
-
-		if(x + 30 > window.innerWidth){
-			dir = 0;
-		}else if(x < 30) {
-			dir = 1
-		}
-
-		if(dir == 1) {
-			x += 10;
-		} else if (dir == 0) {
-			x -=10;
+		for (var i = 0; i < circleArray.length; i++){
+			circleArray[i].update();
 		}
 	}
 
