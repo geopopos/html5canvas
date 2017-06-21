@@ -53,12 +53,14 @@
  	var maxRadius = 40;
  	// var minRadius = 2;
 
+ 	// color palette from:
+ 	// https://color.adobe.com/create/color-wheel/
  	var colorArray = [
- 		'#ffaa33',
- 		'#99ffaa',
- 		'#00ff00',
- 		'#4411aa',
- 		'#ff1100',
+ 		'#2F72B2',
+ 		'#EB665E',
+ 		'#5CB0FF',
+ 		'#BFCC35',
+ 		'#A8B235',
  	];
 
  	// Interactivity
@@ -67,6 +69,15 @@
  		function(event){
  			mouse.x = event.clientX;
  			mouse.y = event.clientY;
+ 		}
+ 	);
+
+ 	// Fix canvas size when browser is resized
+ 	window.addEventListener('resize', 
+ 		function(){
+ 			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			init();
  		}
  	);
 
@@ -112,20 +123,23 @@
 			this.draw();
  		}
  	}
-
- 	var circleArray = [];
-
-	for(var i = 0; i < 1000; i++){
-		var radius = Math.random() * 3 + 1;
-		console.log(radius);
-		var color = colorArray[Math.floor(Math.random() * colorArray.length)];
-		var x = Math.random() * (innerWidth - radius*2) + radius;
-		var y = Math.random() * (innerHeight - radius*2) + radius;
-		var dx = (Math.random() - 0.5) * 2;
-		var dy = (Math.random() - 0.5) * 2;
-		circleArray.push(new Circle(x, y, dx, dy, radius, color));
+	var circleArray = [];
+	
+	function init () {
+		circleArray = [];
+		for(var i = 0; i < 1000; i++){
+			var radius = Math.random() * 3 + 1;
+			console.log(radius);
+			var color = colorArray[Math.floor(Math.random() * colorArray.length)];
+			var x = Math.random() * (innerWidth - radius*2) + radius;
+			var y = Math.random() * (innerHeight - radius*2) + radius;
+			var dx = (Math.random() - 0.5) * 2;
+			var dy = (Math.random() - 0.5) * 2;
+			circleArray.push(new Circle(x, y, dx, dy, radius, color));
+		}
 	}
 
+	init();
 
 	// Moving Circle
 	function animate() {
